@@ -1,0 +1,55 @@
+# Blacklist everything
+/*
+
+# whitelist the necessary files and folders, this gets everything from inside them too
+!.gitignore
+!.gitmodules
+!LICENSE
+!README.md
+!mcs/
+!proj/
+!ip_repo/
+!sdk/
+!src/
+!doc/
+
+#Digilent Added ignore rules for Vivado projects
+
+# sdk exclusions
+sdk/.metadata
+sdk/**/*RemoteSystemsTempFiles
+sdk/**/*Debug/*
+sdk/**/*Release
+sdk/**/*webtalk
+sdk/.sdk
+sdk/.analytics
+sdk/*.log
+sdk/**/*system_wrapper*
+# include the relevant elf files
+!sdk/**/*Debug/*.elf
+!sdk/**/*Debug/*.elf.size
+
+# whitelist vivado-library if it exists
+!ip_repo/Library
+
+# Make sure we keep only xci files in ip src subfolder
+ip_repo/User/*/**
+!ip_repo/User/*/*.xci
+!ip_repo/User/*/*.prj
+
+# Do not ignore block diagram files
+src/bd/*/**
+!src/bd/**/.bd
+!src/bd/**/*_wrapper.v
+
+
+# ignore everything in project folder
+proj/*
+# except this file and project generators
+!proj/rebuild_prj.tcl
+!proj/rebuild_bd.tcl
+
+# keep the empty folders
+!**/.gitkeep
+
+!**/creat_rebuild_tcl.md
