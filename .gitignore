@@ -15,14 +15,11 @@
 
 work/**
 
-
-
-
 # Do not ignore block diagram files
 !src/bd/**/.bd
 !src/bd/**/*_wrapper.v
 
-# except this file and project generators
+!**/run.sh
 
 
 # keep the empty folders
