@@ -17,32 +17,9 @@ proc get_script_folder {} {
 variable script_folder
 set script_folder [_tcl::get_script_folder]
 
-################################################################
-# Check if script is running in correct Vivado version.
-################################################################
-set scripts_vivado_version 2021.2
-set current_vivado_version [version -short]
-
-if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
-   puts ""
-   catch {common::send_gid_msg -ssname BD::TCL -id 2041 -severity "ERROR" "This script was generated using Vivado <$scripts_vivado_version> and is being run in <$current_vivado_version> of Vivado. Please run the script in Vivado <$scripts_vivado_version> then open the design in Vivado <$current_vivado_version>. Upgrade the design by running \"Tools => Report => Report IP Status...\", then run write_bd_tcl to create an updated script."}
-
-   return 1
-}
-
-################################################################
-# START
-################################################################
-
 # CHANGE DESIGN NAME HERE
-# variable design_name
-
-# value name
+variable design_name
 set design_name mrmac_subsystem
-
-# If you do not already have an existing IP Integrator design open,
-# you can create a design using the following command:
-#    create_bd_design $design_name
 
 # Creating design if needed
 set errMsg ""
@@ -112,11 +89,11 @@ set bCheckIPsPassed 1
 set bCheckIPs 1
 if { $bCheckIPs == 1 } {
    set list_check_ips "\ 
-xilinx.com:ip:bufg_gt:1.0\
-xilinx.com:ip:gt_quad_base:1.1\
-xilinx.com:ip:mrmac:1.5\
-xilinx.com:ip:util_ds_buf:2.2\
-xilinx.com:ip:xlconstant:1.1\
+xilinx.com:ip:bufg_gt:*\
+xilinx.com:ip:gt_quad_base:*\
+xilinx.com:ip:mrmac:*\
+xilinx.com:ip:util_ds_buf:*\
+xilinx.com:ip:xlconstant:*\
 "
 
    set list_ips_missing ""
@@ -423,37 +400,37 @@ proc create_root_design { parentCell } {
   set tx_ts_clk [ create_bd_port -dir I -from 3 -to 0 -type clk tx_ts_clk ]
 
   # Create instance: bufg_gt_0, and set properties
-  set bufg_gt_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt:1.0 bufg_gt_0 ]
+  set bufg_gt_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt bufg_gt_0 ]
 
   # Create instance: bufg_gt_1, and set properties
-  set bufg_gt_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt:1.0 bufg_gt_1 ]
+  set bufg_gt_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt bufg_gt_1 ]
 
   # Create instance: bufg_gt_1_1, and set properties
-  set bufg_gt_1_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt:1.0 bufg_gt_1_1 ]
+  set bufg_gt_1_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt bufg_gt_1_1 ]
 
   # Create instance: bufg_gt_1_2, and set properties
-  set bufg_gt_1_2 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt:1.0 bufg_gt_1_2 ]
+  set bufg_gt_1_2 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt bufg_gt_1_2 ]
 
   # Create instance: bufg_gt_1_3, and set properties
-  set bufg_gt_1_3 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt:1.0 bufg_gt_1_3 ]
+  set bufg_gt_1_3 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt bufg_gt_1_3 ]
 
   # Create instance: bufg_gt_2, and set properties
-  set bufg_gt_2 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt:1.0 bufg_gt_2 ]
+  set bufg_gt_2 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt bufg_gt_2 ]
 
   # Create instance: bufg_gt_3, and set properties
-  set bufg_gt_3 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt:1.0 bufg_gt_3 ]
+  set bufg_gt_3 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt bufg_gt_3 ]
 
   # Create instance: bufg_gt_3_1, and set properties
-  set bufg_gt_3_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt:1.0 bufg_gt_3_1 ]
+  set bufg_gt_3_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt bufg_gt_3_1 ]
 
   # Create instance: bufg_gt_3_2, and set properties
-  set bufg_gt_3_2 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt:1.0 bufg_gt_3_2 ]
+  set bufg_gt_3_2 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt bufg_gt_3_2 ]
 
   # Create instance: bufg_gt_3_3, and set properties
-  set bufg_gt_3_3 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt:1.0 bufg_gt_3_3 ]
+  set bufg_gt_3_3 [ create_bd_cell -type ip -vlnv xilinx.com:ip:bufg_gt bufg_gt_3_3 ]
 
   # Create instance: gt_quad_base, and set properties
-  set gt_quad_base [ create_bd_cell -type ip -vlnv xilinx.com:ip:gt_quad_base:1.1 gt_quad_base ]
+  set gt_quad_base [ create_bd_cell -type ip -vlnv xilinx.com:ip:gt_quad_base gt_quad_base ]
   set_property -dict [ list \
    CONFIG.PORTS_INFO_DICT {\
      LANE_SEL_DICT {PROT0 {RX0 RX1 RX2 RX3 TX0 TX1 TX2 TX3}}\
@@ -475,7 +452,7 @@ HSCLK1_LCPLLGTREFCLK0 refclk_PROT0_R0_161.1328125_MHz_unique1} \
  ] $gt_quad_base
 
   # Create instance: mrmac_0, and set properties
-  set mrmac_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:mrmac:1.5 mrmac_0 ]
+  set mrmac_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:mrmac mrmac_0 ]
   set_property -dict [ list \
    CONFIG.GT_CH0_RX_REFCLK_FREQUENCY_C0 {161.1328125} \
    CONFIG.GT_CH0_TX_REFCLK_FREQUENCY_C0 {161.1328125} \
@@ -490,13 +467,13 @@ HSCLK1_LCPLLGTREFCLK0 refclk_PROT0_R0_161.1328125_MHz_unique1} \
  ] $mrmac_0
 
   # Create instance: util_ds_buf_0, and set properties
-  set util_ds_buf_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_ds_buf:2.2 util_ds_buf_0 ]
+  set util_ds_buf_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_ds_buf util_ds_buf_0 ]
   set_property -dict [ list \
    CONFIG.C_BUF_TYPE {IBUFDSGTE} \
  ] $util_ds_buf_0
 
   # Create instance: xlconstant_0, and set properties
-  set xlconstant_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 xlconstant_0 ]
+  set xlconstant_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant xlconstant_0 ]
   set_property -dict [ list \
    CONFIG.CONST_VAL {1} \
    CONFIG.CONST_WIDTH {3} \

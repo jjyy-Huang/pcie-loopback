@@ -17,30 +17,9 @@ proc get_script_folder {} {
 variable script_folder
 set script_folder [_tcl::get_script_folder]
 
-################################################################
-# Check if script is running in correct Vivado version.
-################################################################
-set scripts_vivado_version 2021.2
-set current_vivado_version [version -short]
-
-if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
-   puts ""
-   catch {common::send_gid_msg -ssname BD::TCL -id 2041 -severity "ERROR" "This script was generated using Vivado <$scripts_vivado_version> and is being run in <$current_vivado_version> of Vivado. Please run the script in Vivado <$scripts_vivado_version> then open the design in Vivado <$current_vivado_version>. Upgrade the design by running \"Tools => Report => Report IP Status...\", then run write_bd_tcl to create an updated script."}
-
-   return 1
-}
-
-################################################################
-# START
-################################################################
-
 # CHANGE DESIGN NAME HERE
 variable design_name
 set design_name xdma_rootcomplex
-
-# If you do not already have an existing IP Integrator design open,
-# you can create a design using the following command:
-#    create_bd_design $design_name
 
 # Creating design if needed
 set errMsg ""
@@ -110,11 +89,11 @@ set bCheckIPsPassed 1
 set bCheckIPs 1
 if { $bCheckIPs == 1 } {
    set list_check_ips "\ 
-xilinx.com:ip:util_ds_buf:2.2\
-xilinx.com:ip:xlconstant:1.1\
-xilinx.com:ip:gt_quad_base:1.1\
-xilinx.com:ip:pcie_phy_versal:1.0\
-xilinx.com:ip:pcie_versal:1.0\
+xilinx.com:ip:util_ds_buf:*\
+xilinx.com:ip:xlconstant:*\
+xilinx.com:ip:gt_quad_base:*\
+xilinx.com:ip:pcie_phy_versal:*\
+xilinx.com:ip:pcie_versal:*\
 "
 
    set list_ips_missing ""
@@ -259,21 +238,21 @@ proc create_root_design { parentCell } {
  ] $user_reset
 
   # Create instance: bufg_gt_sysclk, and set properties
-  set bufg_gt_sysclk [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_ds_buf:2.2 bufg_gt_sysclk ]
+  set bufg_gt_sysclk [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_ds_buf bufg_gt_sysclk ]
   set_property -dict [ list \
    CONFIG.C_BUFG_GT_SYNC {true} \
    CONFIG.C_BUF_TYPE {BUFG_GT} \
  ] $bufg_gt_sysclk
 
   # Create instance: const_1b1, and set properties
-  set const_1b1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 const_1b1 ]
+  set const_1b1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant const_1b1 ]
   set_property -dict [ list \
    CONFIG.CONST_VAL {1} \
    CONFIG.CONST_WIDTH {1} \
  ] $const_1b1
 
   # Create instance: gt_quad_0, and set properties
-  set gt_quad_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:gt_quad_base:1.1 gt_quad_0 ]
+  set gt_quad_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:gt_quad_base gt_quad_0 ]
   set_property -dict [ list \
    CONFIG.PORTS_INFO_DICT {\
      LANE_SEL_DICT {PROT0 {RX0 RX1 RX2 RX3 TX0 TX1 TX2 TX3}}\
@@ -289,7 +268,7 @@ refclk_PROT0_R0_100_MHz_unique1} \
  ] $gt_quad_0
 
   # Create instance: gt_quad_1, and set properties
-  set gt_quad_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:gt_quad_base:1.1 gt_quad_1 ]
+  set gt_quad_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:gt_quad_base gt_quad_1 ]
   set_property -dict [ list \
    CONFIG.PORTS_INFO_DICT {\
      LANE_SEL_DICT {PROT0 {RX0 RX1 RX2 RX3 TX0 TX1 TX2 TX3}}\
@@ -305,7 +284,7 @@ refclk_PROT0_R0_100_MHz_unique1} \
  ] $gt_quad_1
 
   # Create instance: pcie_phy, and set properties
-  set pcie_phy [ create_bd_cell -type ip -vlnv xilinx.com:ip:pcie_phy_versal:1.0 pcie_phy ]
+  set pcie_phy [ create_bd_cell -type ip -vlnv xilinx.com:ip:pcie_phy_versal pcie_phy ]
   set_property -dict [ list \
    CONFIG.PL_LINK_CAP_MAX_LINK_SPEED {16.0_GT/s} \
    CONFIG.PL_LINK_CAP_MAX_LINK_WIDTH {X8} \
@@ -326,7 +305,7 @@ refclk_PROT0_R0_100_MHz_unique1} \
  ] $pcie_phy
 
   # Create instance: pcie_versal_0, and set properties
-  set pcie_versal_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:pcie_versal:1.0 pcie_versal_0 ]
+  set pcie_versal_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:pcie_versal pcie_versal_0 ]
   set_property -dict [ list \
    CONFIG.AXISTEN_IF_EXT_512_RQ_STRADDLE {false} \
    CONFIG.MSI_X_OPTIONS {None} \
@@ -578,7 +557,7 @@ refclk_PROT0_R0_100_MHz_unique1} \
  ] $pcie_versal_0
 
   # Create instance: refclk_ibuf, and set properties
-  set refclk_ibuf [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_ds_buf:2.2 refclk_ibuf ]
+  set refclk_ibuf [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_ds_buf refclk_ibuf ]
   set_property -dict [ list \
    CONFIG.C_BUF_TYPE {IBUFDSGTE} \
  ] $refclk_ibuf

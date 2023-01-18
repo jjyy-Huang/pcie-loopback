@@ -1,3 +1,11 @@
+set SCRIPTES_VERSION 2021.2
+set CURRENT_VERSION [version -short]
+
+if { [string first $SCRIPTES_VERSION $CURRENT_VERSION] == -1 } {
+    puts "ERROR: This script was generated using Vivado $SCRIPTES_VERSION and is being run in $CURRENT_VERSION of Vivado.\n"
+    exit 1
+}
+
 set DEVICE xcvc1902-vsvd1760-2MP-e-S
 set MAX_THREADS 24
 
