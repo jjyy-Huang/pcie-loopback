@@ -1,13 +1,13 @@
 # Build Step 
 
-## 1. set your vivado path in run.sh
+## 1. set your vivado path in Makefile
 ```bash
-source ${WHERE_XILINXTOOLS_INSTALLED}/xilinx/Vivado/2021.2/settings64.sh
+VIVADO_ENV = ${WHERE_XILINXTOOLS_INSTALLED}/xilinx/Vivado/${VERSION}/settings64.sh
 ```
 
 ## 2. synth, P&R
 ```bash
-source ./run.sh
+make all
 ```
 
 ## 3. run simulation (option)

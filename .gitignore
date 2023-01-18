@@ -13,13 +13,13 @@
 
 #Digilent Added ignore rules for Vivado projects
 
-work/**
+!work/
 
 # Do not ignore block diagram files
 !src/bd/**/.bd
 !src/bd/**/*_wrapper.v
 
-!**/run.sh
+!**/Makefile
 
 
 # keep the empty folders
