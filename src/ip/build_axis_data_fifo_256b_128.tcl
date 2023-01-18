@@ -36,7 +36,7 @@ if { $bCheckIPsPassed != 1 } {
 # CREATE IP axis_data_fifo_256b_128
 ##################################################################
 
-set axis_data_fifo_256b_128 [create_ip -name axis_data_fifo -vendor xilinx.com -library ip -module_name axis_data_fifo_256b_128]
+set axis_data_fifo_256b_128 [create_ip -name axis_data_fifo -vendor xilinx.com -library ip -module_name axis_data_fifo_256b_128 -dir ./src/ip/]
 
 set_property -dict { 
   CONFIG.TDATA_NUM_BYTES {32}

@@ -20,6 +20,7 @@ set script_folder [_tcl::get_script_folder]
 # CHANGE DESIGN NAME HERE
 variable design_name
 set design_name mrmac_subsystem
+create_bd_design $design_name -dir ./src/bd/
 
 # Creating design if needed
 set errMsg ""

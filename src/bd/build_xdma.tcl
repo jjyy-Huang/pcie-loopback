@@ -23,7 +23,7 @@ set design_name xdma_endpoint
 
 # If you do not already have an existing IP Integrator design open,
 # you can create a design using the following command:
-#    create_bd_design $design_name
+create_bd_design $design_name -dir ./src/bd/
 
 # Creating design if needed
 set errMsg ""

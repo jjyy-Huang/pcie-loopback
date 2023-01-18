@@ -13,4 +13,4 @@ build:
 
 .PHONY: clean
 clean:
-	rm -rf ./work/.gen ./work/.srcs ./work/.Xil ./work/log
+	rm -rf ./work/* ./*.log ./*.jou

@@ -12,7 +12,7 @@ set MAX_THREADS 24
 set SYNTH_TOP xilinx_dma_pcie_ep
 set SIM_TOP board
 
-set RUN_SIM false
+set RUN_SIM true
 
 proc reportCriticalPaths { FILENAME DELAYTYPE WLEVLE MAX_PATHS NWORST} {
     # Open the specified output file in write mode
@@ -50,10 +50,16 @@ proc reportCriticalPaths { FILENAME DELAYTYPE WLEVLE MAX_PATHS NWORST} {
 
 set ROOTDIR [pwd]
 set WORKDIR $ROOTDIR/work
+set GENSRCDIR $WORKDIR/src
+set GENIPDIR $GENSRCDIR/ip
+set GENBDDIR $GENSRCDIR/bd
 set LOGDIR $ROOTDIR/work/log
 
 file mkdir $WORKDIR
 file mkdir $LOGDIR
+file mkdir $GENSRCDIR
+file mkdir $GENIPDIR
+file mkdir $GENBDDIR
 
 cd $WORKDIR
 
@@ -77,8 +83,8 @@ synth_ip [get_ips]
 # rebuild block design
 source $ROOTDIR/src/bd/build_mrmac.tcl
 source $ROOTDIR/src/bd/build_xdma.tcl
-generate_target all [get_files $WORKDIR/.srcs/sources_1/bd/mrmac_subsystem/mrmac_subsystem.bd]
-generate_target all [get_files $WORKDIR/.srcs/sources_1/bd/xdma_endpoint/xdma_endpoint.bd]
+generate_target all [get_files $GENBDDIR/mrmac_subsystem/mrmac_subsystem.bd]
+generate_target all [get_files $GENBDDIR/xdma_endpoint/xdma_endpoint.bd]
 # finish rebuild block design
 
 
@@ -89,7 +95,7 @@ if { $RUN_SIM } {
     read_verilog -library xil_defaultlib [glob $ROOTDIR/src/tb/*.vh]
 
     source $ROOTDIR/src/bd/build_xdma_tb.tcl
-    generate_target all [get_files $WORKDIR/.srcs/sources_1/bd/xdma_rootcomplex/xdma_rootcomplex.bd]
+    generate_target all [get_files $GENBDDIR/xdma_rootcomplex/xdma_rootcomplex.bd]
 
     save_project_as sim $WORKDIR -force
     set_property top $SIM_TOP [get_fileset sim_1]

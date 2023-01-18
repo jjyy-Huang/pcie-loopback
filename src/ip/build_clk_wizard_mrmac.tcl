@@ -35,7 +35,7 @@ if { $bCheckIPsPassed != 1 } {
 # CREATE IP clk_wizard_mrmac
 ##################################################################
 
-set clk_wizard_mrmac [create_ip -name clk_wizard -vendor xilinx.com -library ip -module_name clk_wizard_mrmac]
+set clk_wizard_mrmac [create_ip -name clk_wizard -vendor xilinx.com -library ip -module_name clk_wizard_mrmac -dir ./src/ip/]
 
 set_property -dict { 
   CONFIG.CLKOUT_USED {true,false,false,false,false,false,false}

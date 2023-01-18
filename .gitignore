@@ -13,7 +13,7 @@
 
 #Digilent Added ignore rules for Vivado projects
 
-!work/
+!work/**
 
 # Do not ignore block diagram files
 !src/bd/**/.bd
@@ -21,9 +21,8 @@
 
 !**/Makefile
 
+./*.log
+./*.jou
 
 # keep the empty folders
 !**/.gitkeep
-
-./*.log
-./*.jou
