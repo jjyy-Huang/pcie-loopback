@@ -14,12 +14,17 @@ build:
 .PHONY: xcku040
 xcku040:
 	git checkout xcku040
-	make build
+	make all
 
 .PHONY: xcvu9p
 xcvu9p:
 	git checkout xcvu9p
-	make build
+	make all
+
+.PHONY: xcvu9p-qdma
+xcvu9p:
+	git checkout xcvu9p-qdma
+	make all
 
 .PHONY: clean
 clean:
