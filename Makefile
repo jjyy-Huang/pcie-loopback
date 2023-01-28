@@ -22,7 +22,7 @@ xcvu9p:
 	make all
 
 .PHONY: xcvu9p-qdma
-xcvu9p:
+xcvu9p-qdma:
 	git checkout xcvu9p-qdma
 	make all
 
