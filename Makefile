@@ -17,7 +17,7 @@ xcku040:
 	build
 
 .PHONY: xcvu9p
-xcku040:
+xcvu9p:
 	git checkout xcvu9p
 	build
 
