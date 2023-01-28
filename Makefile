@@ -11,6 +11,16 @@ build:
 	vivado -mode batch -source ./script/build_prj.tcl 2>&1 | tee ./run.log
 	echo "Finish building Vivado project, please check the run.log for details."
 
+.PHONY: xcku040
+xcku040:
+	git checkout xcku040
+	build
+
+.PHONY: xcvu9p
+xcku040:
+	git checkout xcvu9p
+	build
+
 .PHONY: clean
 clean:
 	rm -rf ./work/* ./*.log ./*.jou
