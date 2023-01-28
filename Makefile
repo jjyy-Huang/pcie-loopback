@@ -13,11 +13,13 @@ build:
 
 .PHONY: xcku040
 xcku040:
+	clean
 	git checkout xcku040
 	build
 
 .PHONY: xcvu9p
 xcvu9p:
+	clean
 	git checkout xcvu9p
 	build
 
