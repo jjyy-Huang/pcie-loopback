@@ -1,5 +1,5 @@
 SHELL = /bin/bash
-VIVADO_ENV = /opt/xilinx/Vivado/2021.2/settings64.sh
+VIVADO_ENV = /opt/xilinx/Vivado/2022.1/settings64.sh
 
 DEVICE_NAME = xcku040 #	xcku040 / xcvu9p															
 DEVICE = xcku040-ffva1156-2-e #	xcku040-ffva1156-2-e / xcvu9p-flga2104-2L-e							

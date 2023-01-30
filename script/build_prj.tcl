@@ -48,6 +48,24 @@ proc reportCriticalPaths { FILENAME DELAYTYPE WLEVLE MAX_PATHS NWORST} {
     return 0
 }; # End PROC
 
+proc readRTLFile { DIR } {
+    set FILES [glob -nocomplain -directory $DIR/ *]
+    foreach FILE $FILES {
+        if {[file isfile $FILE]} {
+            set FEXT [file extension $FILE]
+            if { [string match $FEXT .v] || [string match $FEXT .vh]} {
+                read_verilog -library xil_defaultlib $FILE
+                puts $FILE
+            } 
+            if { [string match $FEXT .sv] || [string match $FEXT .svh]} {
+                read_verilog -library xil_defaultlib -sv $FILE
+                puts $FILE
+            }
+        }
+            
+    }
+}
+
 
 set ROOTDIR [pwd]
 set WORKDIR $ROOTDIR/work
@@ -70,10 +88,9 @@ set_property XPM_LIBRARIES {XPM_CDC XPM_FIFO XPM_MEMORY} [current_project]
 set_property default_lib xil_defaultlib [current_project]
 
 # add source file
-read_verilog -library xil_defaultlib [glob $ROOTDIR/src/hdl/*.v]
-read_verilog -library xil_defaultlib [glob $ROOTDIR/src/hdl/$DEVICE_NAME/*.v]
-read_verilog -library xil_defaultlib [glob $ROOTDIR/src/hdl/$DEVICE_NAME/$WHICH_DMA/*.v]
-read_verilog -library xil_defaultlib -sv [glob $ROOTDIR/src/hdl/$DEVICE_NAME/$WHICH_DMA/*.sv]
+readRTLFile $ROOTDIR/src/hdl
+readRTLFile $ROOTDIR/src/hdl/$DEVICE_NAME/
+readRTLFile $ROOTDIR/src/hdl/$DEVICE_NAME/$WHICH_DMA/
 
 # rebuild IP
 foreach FILE [glob $ROOTDIR/src/ip/$DEVICE_NAME/*.tcl] {
@@ -89,12 +106,9 @@ synth_ip [get_ips]
 if { $RUN_SIM } {
 # start simulation
 # add testbench file
-    read_verilog -library xil_defaultlib [glob $ROOTDIR/src/tb/*.v]
-    read_verilog -library xil_defaultlib [glob $ROOTDIR/src/tb/*.vh]
-    read_verilog -library xil_defaultlib [glob $ROOTDIR/src/tb/$DEVICE_NAME/*.v]
-    read_verilog -library xil_defaultlib [glob $ROOTDIR/src/tb/$DEVICE_NAME/*.vh]
-    read_verilog -library xil_defaultlib [glob $ROOTDIR/src/tb/$DEVICE_NAME/$WHICH_DMA/*.v]
-    read_verilog -library xil_defaultlib [glob $ROOTDIR/src/tb/$DEVICE_NAME/$WHICH_DMA/*.vh]
+    readRTLFile $ROOTDIR/src/tb
+    readRTLFile $ROOTDIR/src/tb/$DEVICE_NAME
+    readRTLFile $ROOTDIR/src/tb/$DEVICE_NAME/$WHICH_DMA
 
     save_project_as sim $WORKDIR -force
     set_property top $SIM_TOP [get_fileset sim_1]
