@@ -1,9 +1,10 @@
 set DEVICE_NAME [lindex $argv 0]
 set DEVICE [lindex $argv 1]
-set WHICH_DMA [lindex $argv 2]
+set WHICH_DMAC [lindex $argv 2]
 set SYNTH_TOP [lindex $argv 3]
 set SIM_TOP [lindex $argv 4]
 set RUN_SIM [lindex $argv 5]
+set ROOTDIR [lindex $argv 6]
 
 set MAX_THREADS 24
 
@@ -56,18 +57,16 @@ proc readRTLFile { DIR } {
             if { [string match $FEXT .v] || [string match $FEXT .vh]} {
                 read_verilog -library xil_defaultlib $FILE
                 puts $FILE
-            } 
+            }
             if { [string match $FEXT .sv] || [string match $FEXT .svh]} {
                 read_verilog -library xil_defaultlib -sv $FILE
                 puts $FILE
             }
         }
-            
+
     }
 }
 
-
-set ROOTDIR [pwd]
 set WORKDIR $ROOTDIR/work
 set GENSRCDIR $WORKDIR/src
 set GENIPDIR $GENSRCDIR/ip
@@ -90,13 +89,13 @@ set_property default_lib xil_defaultlib [current_project]
 # add source file
 readRTLFile $ROOTDIR/src/hdl
 readRTLFile $ROOTDIR/src/hdl/$DEVICE_NAME/
-readRTLFile $ROOTDIR/src/hdl/$DEVICE_NAME/$WHICH_DMA/
+readRTLFile $ROOTDIR/src/hdl/$DEVICE_NAME/$WHICH_DMAC/
 
 # rebuild IP
 foreach FILE [glob $ROOTDIR/src/ip/$DEVICE_NAME/*.tcl] {
     source $FILE
 }
-foreach FILE [glob $ROOTDIR/src/ip/$DEVICE_NAME/$WHICH_DMA/*.tcl] {
+foreach FILE [glob $ROOTDIR/src/ip/$DEVICE_NAME/$WHICH_DMAC/*.tcl] {
     source $FILE
 }
 generate_target all [get_ips]
@@ -108,7 +107,7 @@ if { $RUN_SIM } {
 # add testbench file
     readRTLFile $ROOTDIR/src/tb
     readRTLFile $ROOTDIR/src/tb/$DEVICE_NAME
-    readRTLFile $ROOTDIR/src/tb/$DEVICE_NAME/$WHICH_DMA
+    readRTLFile $ROOTDIR/src/tb/$DEVICE_NAME/$WHICH_DMAC
 
     save_project_as sim $WORKDIR -force
     set_property top $SIM_TOP [get_fileset sim_1]
@@ -117,7 +116,7 @@ if { $RUN_SIM } {
 }
 # finish simulation
 
-read_xdc [glob $ROOTDIR/src/xdc/$DEVICE_NAME/$WHICH_DMA/*.xdc]
+read_xdc [glob $ROOTDIR/src/xdc/$DEVICE_NAME/$WHICH_DMAC/*.xdc]
 
 synth_design -top $SYNTH_TOP -part $DEVICE
 write_checkpoint -force $LOGDIR/post_synth

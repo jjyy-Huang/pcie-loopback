@@ -1,23 +1,54 @@
 SHELL = /bin/bash
 VIVADO_ENV = /opt/xilinx/Vivado/2022.1/settings64.sh
 
-DEVICE_NAME = xcku040 #	xcku040 / xcvu9p															
-DEVICE = xcku040-ffva1156-2-e #	xcku040-ffva1156-2-e / xcvu9p-flga2104-2L-e							
-WHICH_DMA = xdma #	xdma	/ qdma	
-SYNTH_TOP = xilinx_dma_pcie_ep #	xilinx_dma_pcie_ep	/  xilinx_qdma_pcie_ep							
-SIM_TOP = board	#	board											
-RUN_SIM = false	#	false	 /  true			
+VIVADO_CMD = vivado -mode batch -source ./script/build_prj.tcl -tclargs
 
-.PHONY: all
-all: clean build
+SIM_TOP=board	#	board
+RUN_SIM=false	#	false	/ true
+ROOTFIR=$(PWD)
+
+
+.PHONY: source-env
+source-env:
+	@source $(VIVADO_ENV)
 
 .PHONY: build
-build:
-	$(SHELL) $(VIVADO_ENV)
-	echo "Start building project."
-	vivado -mode batch -source ./script/build_prj.tcl -tclargs $(DEVICE_NAME) $(DEVICE) $(WHICH_DMA) $(SYNTH_TOP) $(SIM_TOP) $(RUN_SIM) 2>&1 | tee ./run.log
-	echo "Finish building Vivado project, please check the run.log for details."
+build: source-env
+	@echo "Start building project."
+	@$(VIVADO_CMD) $(DEVICE_NAME) $(DEVICE) $(WHICH_DMAC) $(SYNTH_TOP) $(SIM_TOP) $(RUN_SIM) $(ROOTFIR) 2>&1 | tee ./run.log
+	@echo "Finish building Vivado project, please check the run.log for details."
 
 .PHONY: clean
 clean:
-	rm -rf ./work/* ./*.log ./*.jou
+	@rm -rf ./work/* ./*.log ./*.jou
+
+
+.PHONY: build-xcku040-xdma-40gmac
+.ONESHELL:
+build-xcku040-xdma-40gmac: clean
+	export DEVICE_NAME=xcku040
+	export DEVICE=xcku040-ffva1156-2-e
+	export WHICH_DMAC=xdma
+	export SYNTH_TOP=xilinx_dma_pcie_ep
+	@make build
+
+.PHONY: build-xcvu9p-xdma-cmac
+.ONESHELL:
+build-xcvu9p-xdma-cmac: clean
+	export DEVICE_NAME=xcvu9p
+	export DEVICE=xcvu9p-flga2104-2L-e
+	export WHICH_DMAC=xdma
+	export SYNTH_TOP=xilinx_dma_pcie_ep
+	@make build
+
+.PHONY: build-xcvu9p-qdma-cmac
+.ONESHELL:
+build-xcvu9p-qdma-cmac: clean
+	export DEVICE_NAME=xcvu9p
+	export DEVICE=xcvu9p-flga2104-2L-e
+	export WHICH_DMAC=qdma
+	export SYNTH_TOP=xilinx_qdma_pcie_ep
+	@make build
+
+.PHONY: build-vck5000-xdma-mrmac
+build-vck5000-xdma-mrmac: clean
