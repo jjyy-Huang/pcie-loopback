@@ -3,13 +3,9 @@ VIVADO_ENV = /opt/xilinx/Vivado/2022.1/settings64.sh
 
 VIVADO_CMD = vivado -mode batch -source ./script/build_prj.tcl -tclargs
 
-GIT_CMD = git clone
-UDP_REPO = https://github.com/jjyy-Huang/SpinalHDL-ethernet.git
-
 SIM_TOP=board	#	board
 RUN_SIM=false	#	false	/ true
 ROOTFIR=$(PWD)
-
 
 .PHONY: source-env
 source-env:
@@ -25,10 +21,8 @@ build: source-env
 clean:
 	@rm -rf ./work/* ./*.log ./*.jou
 
-
 .PHONY: build-udp-module
 build-udp-module:
-	$(GIT_CMD) $(UDP_REPO)
 	cd SpinalHDL-ethernet
 	sbt "run"
 	cp -rf ./src/hdl/* ../src/hdl
