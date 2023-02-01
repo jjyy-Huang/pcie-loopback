@@ -1,0 +1,3 @@
+[submodule "SpinalHDL-ethernet"]
+	path = SpinalHDL-ethernet
+	url = https://github.com/jjyy-Huang/SpinalHDL-ethernet.git
