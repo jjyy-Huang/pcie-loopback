@@ -30,7 +30,7 @@ build-udp-module:
 
 .PHONY: build-xcku040-xdma-40gmac
 .ONESHELL:
-build-xcku040-xdma-40gmac: clean
+build-xcku040-xdma-40gmac: clean build-udp-module
 	export DEVICE_NAME=xcku040
 	export DEVICE=xcku040-ffva1156-2-e
 	export WHICH_DMAC=xdma
