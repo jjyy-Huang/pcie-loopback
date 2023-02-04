@@ -2,17 +2,17 @@ SHELL = /bin/bash
 VIVADO_ENV = /opt/xilinx/Vivado/2022.1/settings64.sh
 
 VIVADO_CMD = vivado -mode batch -source ./script/build_prj.tcl -tclargs
+SET_VIVADO_ENV = source $(VIVADO_ENV)
 
 SIM_TOP=board	#	board
 RUN_SIM=false	#	false	/ true
 ROOTFIR=$(PWD)
 
-.PHONY: source-env
-source-env:
-	@source $(VIVADO_ENV)
 
 .PHONY: build
-build: source-env
+.ONESHELL:
+build:
+	@$(SET_VIVADO_ENV)
 	@echo "Start building project."
 	@$(VIVADO_CMD) $(DEVICE_NAME) $(DEVICE) $(WHICH_DMAC) $(SYNTH_TOP) $(SIM_TOP) $(RUN_SIM) $(ROOTFIR) 2>&1 | tee ./run.log
 	@echo "Finish building Vivado project, please check the run.log for details."
@@ -30,7 +30,7 @@ build-udp-module:
 
 .PHONY: build-xcku040-xdma-40gmac
 .ONESHELL:
-build-xcku040-xdma-40gmac: clean build-udp-module
+build-xcku040-xdma-40gmac: clean
 	export DEVICE_NAME=xcku040
 	export DEVICE=xcku040-ffva1156-2-e
 	export WHICH_DMAC=xdma
