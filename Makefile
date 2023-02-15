@@ -25,7 +25,7 @@ clean:
 build-udp-module:
 	cd SpinalHDL-ethernet
 	sbt "run"
-	cp -rf ./src/hdl/* ../src/hdl
+	cp -f ./hdl/* ../src/hdl
 	cd ..
 
 .PHONY: build-xcku040-xdma-40gmac

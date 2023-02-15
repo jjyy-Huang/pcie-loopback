@@ -48,7 +48,7 @@
 ##
 ##-----------------------------------------------------------------------------
 ##
-## Project    : The Xilinx PCI Express DMA 
+## Project    : The Xilinx PCI Express DMA
 ## File       : xilinx_pcie_qdma_ref_board.xdc
 ## Version    : 5.0
 ##-----------------------------------------------------------------------------
@@ -136,3 +136,12 @@ set_false_path -to [get_ports -filter NAME=~led_*]
 #
 set_false_path -to [get_pins -hier *sync_reg[0]/D]
 #
+
+
+set_property LOC AV33 [get_ports init_clk]
+set_property LOC BE32 [get_ports rx_gt_locked_led]
+set_property LOC BF32 [get_ports rx_aligned_led]
+
+set_property IOSTANDARD LVCMOS12 [get_ports init_clk]
+set_property IOSTANDARD LVCMOS12 [get_ports rx_gt_locked_led]
+set_property IOSTANDARD LVCMOS12 [get_ports rx_aligned_led]

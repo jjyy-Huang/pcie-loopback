@@ -33,7 +33,7 @@ if { $bCheckIPsPassed != 1 } {
 
 set cmac_subsystem [create_ip -name cmac_usplus -vendor xilinx.com -library ip -module_name cmac_subsystem -dir ./src/ip/]
 
-set_property -dict { 
+set_property -dict {
   CONFIG.CMAC_CAUI4_MODE {1}
   CONFIG.NUM_LANES {4x25}
   CONFIG.GT_REF_CLK_FREQ {161.1328125}
@@ -47,11 +47,9 @@ set_property -dict {
   CONFIG.LANE8_GT_LOC {NA}
   CONFIG.LANE9_GT_LOC {NA}
   CONFIG.LANE10_GT_LOC {NA}
-  CONFIG.ETHERNET_BOARD_INTERFACE {Custom}
-  CONFIG.DIFFCLK_BOARD_INTERFACE {Custom}
 } [get_ips cmac_subsystem]
 
-set_property -dict { 
+set_property -dict {
   GENERATE_SYNTH_CHECKPOINT {1}
 } $cmac_subsystem
 
